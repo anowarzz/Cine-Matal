@@ -1,3 +1,4 @@
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import SideBar from "./components/SideBar";
 import MovieList from "./components/cine/MovieList";
@@ -13,6 +14,7 @@ const App = () => {
           <MovieList />
         </div>
       </main>
+          <Footer />
     </div>
   );
 };
