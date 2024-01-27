@@ -9,7 +9,7 @@ const MovieDetailsModal = ({ movie, onClose }) => {
           <img
             className="sm:order-2 w-full object-cover h-full max-sm:max-h-[300px]"
             src={getImgUrl(movie?.cover)}
-            alt=""
+            alt={movie?.title}
           />
           <div className="p-5 lg:p-11">
             <div className="">
