@@ -34,14 +34,16 @@ const MovieCard = ({ movie }) => {
         console.error(
           `The movie ${movie.title} has been added to the cart already`
         );
-        
     }
+    setShowModal(false)
   };
 
   return (
     <>
       {showModal && (
-        <MovieDetailsModal movie={selectedMovie} onClose={handleModalClose} />
+        <MovieDetailsModal movie={selectedMovie} onClose={handleModalClose} 
+        onCartAdd={handleAddToCart}
+        />
       )}
 
       <figure className="p-4 border border-black/10 shadow-sm dark:border-white/10 rounded-xl">
