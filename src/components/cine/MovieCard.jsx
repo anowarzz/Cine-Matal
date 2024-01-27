@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { toast } from "react-toastify";
 import { MovieContext } from "../../context";
 import { getImgUrl } from "../../utils/cine.utility";
 import MovieDetailsModal from "./MovieDetailsModal";
@@ -9,7 +10,7 @@ const MovieCard = ({ movie }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
 
-  const {state, dispatch} = useContext(MovieContext);
+  const { state, dispatch } = useContext(MovieContext);
 
   const handleModalClose = () => {
     setSelectedMovie(null);
@@ -28,37 +29,54 @@ const MovieCard = ({ movie }) => {
       return item.id === movie.id;
     });
     if (!found) {
+      dispatch({
+        type: "ADD_TO_CART",
+        payload: {
+          ...movie,
+        },
+      });
 
-  dispatch({
-    type: 'ADD_TO_CART',
-    payload: {
-      ...movie
-    }
-  })
-
+      toast.success(`Movie ${movie.title} added successfully`, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+      });
     } else {
-      alert(`The movie ${movie.title} has been added to the cart already`);
-        console.error(
-          `The movie ${movie.title} has been added to the cart already`
-        );
+
+       toast.error(`Movie ${movie.title} is already in your cart`, {
+         position: "top-center",
+         autoClose: 3000,
+         hideProgressBar: false,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         theme: "colored",
+       });
     }
-    setShowModal(false)
+    setShowModal(false);
   };
 
   return (
     <>
       {showModal && (
-        <MovieDetailsModal movie={selectedMovie} onClose={handleModalClose} 
-        onCartAdd={handleAddToCart}
+        <MovieDetailsModal
+          movie={selectedMovie}
+          onClose={handleModalClose}
+          onCartAdd={handleAddToCart}
         />
       )}
 
-      <figure className="p-4 border border-black/10 shadow-sm dark:border-white/10 rounded-xl">
+      <figure className="p-4 border  border-black/10 shadow-sm dark:border-white/10 rounded-xl">
         <a href="#" onClick={() => handleMovieSelection(movie)}>
           <img
             className="w-full object-cover"
             src={getImgUrl(movie.cover)}
             alt={movie.title}
+
           />
           <figcaption className="pt-4">
             <h3 className="text-xl mb-1"> {movie.title} </h3>
@@ -66,14 +84,14 @@ const MovieCard = ({ movie }) => {
             <div className="flex items-center space-x-1 mb-5">
               <Rating value={movie.rating} />
             </div>
-            <a
+            <button
               className="bg-primary rounded-lg py-2 px-5 flex items-center justify-center gap-2 text-[#171923] font-semibold text-sm"
               href="#"
               onClick={(e) => handleAddToCart(e, movie)}
             >
               <img src="./assets/tag.svg" alt="" />
               <span>${movie.price} | Add to Cart</span>
-            </a>
+            </button>
           </figcaption>
         </a>
       </figure>
